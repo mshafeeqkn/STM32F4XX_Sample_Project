@@ -46,8 +46,8 @@
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
-void SystemClock_Config(void);
 /* USER CODE BEGIN PFP */
+
 
 /* USER CODE END PFP */
 
@@ -55,6 +55,12 @@ void SystemClock_Config(void);
 /* USER CODE BEGIN 0 */
 
 /* USER CODE END 0 */
+
+void sleep(uint32_t cnt) {
+    for(volatile uint32_t i = 0; i < cnt; i++) {
+        __NOP();
+    }
+}
 
 /**
   * @brief  The application entry point.
@@ -74,9 +80,6 @@ int main(void)
 
   /* USER CODE END Init */
 
-  /* Configure the system clock */
-  SystemClock_Config();
-
   /* USER CODE BEGIN SysInit */
 
   /* USER CODE END SysInit */
@@ -85,24 +88,21 @@ int main(void)
   /* USER CODE BEGIN 2 */
 
   /* USER CODE END 2 */
+  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
+  GPIOC->MODER |= GPIO_MODER_MODER13_0;
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
     /* USER CODE END WHILE */
-
+    GPIOC->ODR &= ~GPIO_ODR_ODR_13;
+    sleep(50000);
+    GPIOC->ODR |= GPIO_ODR_ODR_13;
+    sleep(5000000);
     /* USER CODE BEGIN 3 */
   }
   /* USER CODE END 3 */
-}
-
-/**
-  * @brief System Clock Configuration
-  * @retval None
-  */
-void SystemClock_Config(void)
-{
 }
 
 /* USER CODE BEGIN 4 */

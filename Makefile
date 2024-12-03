@@ -177,4 +177,10 @@ clean:
 #######################################
 -include $(wildcard $(BUILD_DIR)/*.d)
 
+#######################################
+# Flash to the chip
+#######################################
+flash: $(BUILD_DIR)/$(TARGET).bin
+	st-flash --reset write $(BUILD_DIR)/$(TARGET).bin 0x08000000
+
 # *** EOF ***
